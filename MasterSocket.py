@@ -3,7 +3,7 @@
 @Description: In User Settings Edit
 @Author: your name
 @Date: 2020-02-27 17:56:02
-@LastEditTime: 2020-02-28 16:02:13
+@LastEditTime: 2020-05-28 21:11:58
 @LastEditors: Please set LastEditors
 '''
 
@@ -25,20 +25,20 @@ class MasterSocket():
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.bind((self.host, self.port))
             self.connected = True
-        except Exception, e:
-            print "Connect socket fails: %s"%str(e)
+        except Exception as e:
+            print ("Connect socket fails: %s"%str(e))
             return 
-        print "Start to connection listen!"
+        print ("Start to connection listen!")
         self.socket.listen(self.sock_accept)
         while True:
-            print "Accpet a connection!"
+            print ("Accpet a connection!")
             conn, addr = self.socket.accept()
             # print "connect addr:%s" + addr
             while True:
                 data = conn.recv(self.BUFFER_SIZE)
                 if len(data):
-                    print "recieve data:%s" %(data)
-                    conn.send("OK")
+                    print ("recieve data:%s" %(data).decode())
+                    conn.send(("OK").encode())
             conn.close()
 
 
@@ -68,16 +68,16 @@ class MasterSocket():
         if self.socket > 0:
             self.socket.close()
         else:
-            print "Socket is not exist!"
+            print ("Socket is not exist!")
 
     def send(self, command):
         '''
         send command to slave...
         '''
         if not self.connected:
-            print "Socket is disconnected!"
+            print ("Socket is disconnected!")
             return False
-        print "Send command %s to the server!"%str(command)
+        print ("Send command %s to the server!"%str(command))
         self.socket.send(str(command).encode('utf-8'))
 
     # def recv(self):
